@@ -106,7 +106,7 @@ jobs:
           uses: actions/upload-artifact@v4
           with:
             name: artifact-${{ github.run_id }}-${{ github.job }}
-            path: coverage.json
+            path: ${{ github.run_id }}/coverage.json
             
         - uses: "NVIDIA/NeMo/.github/actions/cancel-workflow@main"
           if: failure() && inputs.IS_OPTIONAL == false && !contains(github.event.pull_request.labels.*.name, 'no-fail-fast')
