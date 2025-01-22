@@ -144,7 +144,7 @@ jobs:
      with:
        RUNNER: self-hosted-azure
        SCRIPT: |
-         NEMO_NUMBA_MINVER=0.53 pytest tests/collections/multimodal -m "not pleasefixme" --with_downloads--cov-report=term --cov-report=html --cov=nemo/collections/multimodal
+         NEMO_NUMBA_MINVER=0.53 pytest tests/collections/multimodal -m "not pleasefixme" --with_downloads --cov-report=term --cov-report=html --cov=nemo/collections/multimodal
 
   L0_Unit_Tests_GPU_NLP:
      needs: [cicd-test-container-setup]
@@ -153,7 +153,7 @@ jobs:
      with:
        RUNNER: self-hosted-azure
        SCRIPT: |
-         NEMO_NUMBA_MINVER=0.53 pytest tests/collections/nlp -m "not pleasefixme" --with_downloads--cov-report=term --cov-report=html --cov=nemo/collections/nlp
+         NEMO_NUMBA_MINVER=0.53 pytest tests/collections/nlp -m "not pleasefixme" --with_downloads --cov-report=term --cov-report=html --cov=nemo/collections/nlp
 
   L0_Unit_Tests_GPU_TTS:
      needs: [cicd-test-container-setup]
@@ -162,7 +162,7 @@ jobs:
      with:
        RUNNER: self-hosted-azure
        SCRIPT: |
-         NEMO_NUMBA_MINVER=0.53 pytest tests/collections/tts -m "not pleasefixme" --with_downloads--cov-report=term --cov-report=html --cov=nemo/collections/tts
+         NEMO_NUMBA_MINVER=0.53 pytest tests/collections/tts -m "not pleasefixme" --with_downloads --cov-report=term --cov-report=html --cov=nemo/collections/tts
 
   OPTIONAL_L0_Unit_Tests_GPU_Core:
      needs: [cicd-test-container-setup]
