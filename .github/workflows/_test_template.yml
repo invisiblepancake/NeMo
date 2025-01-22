@@ -98,8 +98,6 @@ jobs:
             echo "potential_infra_failure=$potential_infra_failure" >> "$GITHUB_OUTPUT"
 
             docker cp nemo_container_${{ github.run_id }}:/workspace/coverage.json coverage.json 
-            coverage_report=$(cat coverage.json |  base64 -w 0)
-            echo "coverage_report=$coverage_report" >> "$GITHUB_OUTPUT"
 
             exit $EXIT_CODE
         
