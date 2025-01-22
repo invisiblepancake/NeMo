@@ -100,6 +100,7 @@ jobs:
             coverage_report=artifact-${{ github.run_id }}-$(uuidgen)
             echo "coverage_report=$coverage_report" >> "$GITHUB_OUTPUT"
 
+            docker exec nemo_container_${{ github.run_id }} bash -c 'ls -al'
             docker cp nemo_container_${{ github.run_id }}:/workspace/.coverage .coverage 
 
             exit $EXIT_CODE
