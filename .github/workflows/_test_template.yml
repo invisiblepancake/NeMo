@@ -97,7 +97,7 @@ jobs:
             potential_infra_failure=$(cat err.log | grep -Eqiw "device" && echo true || echo false)
             echo "potential_infra_failure=$potential_infra_failure" >> "$GITHUB_OUTPUT"
 
-            docker cp nemo_container_${{ github.run_id }}:coverage.json coverage.json 
+            docker cp nemo_container_${{ github.run_id }}:/workspace/coverage.json coverage.json 
             coverage_report=$(cat coverage.json |  base64 -w 0)
             echo "coverage_report=$coverage_report" >> "$GITHUB_OUTPUT"
 
