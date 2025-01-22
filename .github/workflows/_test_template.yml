@@ -97,7 +97,7 @@ jobs:
             potential_infra_failure=$(cat err.log | grep -Eqiw "device" && echo true || echo false)
             echo "potential_infra_failure=$potential_infra_failure" >> "$GITHUB_OUTPUT"
 
-            coverage_report=artifact-${{ github.run_id }}-${{ github.job }}
+            coverage_report=artifact-${{ github.run_id }}-$(uuidgen)
             echo "coverage_report=$coverage_report" >> "$GITHUB_OUTPUT"
 
 
