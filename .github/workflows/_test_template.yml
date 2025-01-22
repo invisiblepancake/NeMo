@@ -90,7 +90,9 @@ jobs:
             ) 2> >(tee err.log)
 
             EXIT_CODE=$?
-            
+
+            set -x
+
             log=$(tail -c 2000 err.log |  base64 -w 0)
             echo "log=$log" >> "$GITHUB_OUTPUT"
             
