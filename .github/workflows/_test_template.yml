@@ -38,7 +38,7 @@ on:
         description: Boolean flag when infra-related keyword spotted in logs.
         value: ${{ jobs.main.outputs.potential_infra_failure }}
       coverage_report:
-        description: Coverage report (json), if generated
+        description: Key of coverage_report artifact
         value: ${{ jobs.main.outputs.coverage_report }}
 jobs:
   
@@ -97,6 +97,10 @@ jobs:
             potential_infra_failure=$(cat err.log | grep -Eqiw "device" && echo true || echo false)
             echo "potential_infra_failure=$potential_infra_failure" >> "$GITHUB_OUTPUT"
 
+            coverage_report=artifact-${{ github.run_id }}-${{ github.job }}
+            echo "coverage_report=$coverage_report" >> "$GITHUB_OUTPUT"
+
+
             docker cp nemo_container_${{ github.run_id }}:/workspace/coverage.json coverage.json 
 
             exit $EXIT_CODE
@@ -104,7 +108,7 @@ jobs:
         - name: Upload artifacts
           uses: actions/upload-artifact@v4
           with:
-            name: artifact-${{ github.run_id }}-${{ github.job }}
+            name: ${{ steps.main.outputs.coverage_report }}
             path: ${{ github.run_id }}/coverage.json
             
         - uses: "NVIDIA/NeMo/.github/actions/cancel-workflow@main"
