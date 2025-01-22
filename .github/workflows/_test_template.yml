@@ -100,8 +100,7 @@ jobs:
             coverage_report=artifact-${{ github.run_id }}-$(uuidgen)
             echo "coverage_report=$coverage_report" >> "$GITHUB_OUTPUT"
 
-
-            docker cp nemo_container_${{ github.run_id }}:/workspace/coverage.json coverage.json 
+            docker cp nemo_container_${{ github.run_id }}:/workspace/.coverage .coverage 
 
             exit $EXIT_CODE
         
@@ -109,7 +108,7 @@ jobs:
           uses: actions/upload-artifact@v4
           with:
             name: ${{ steps.main.outputs.coverage_report }}
-            path: ${{ github.run_id }}/coverage.json
+            path: ${{ github.run_id }}/.coverage
             
         - uses: "NVIDIA/NeMo/.github/actions/cancel-workflow@main"
           if: failure() && inputs.IS_OPTIONAL == false && !contains(github.event.pull_request.labels.*.name, 'no-fail-fast')
