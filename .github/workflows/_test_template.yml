@@ -26,6 +26,7 @@ on:
         description: Failure will cancel all other tests if set to true
         required: false
         default: false
+
     outputs:
       conclusion:
         description: Conclusion of main test step
@@ -36,6 +37,9 @@ on:
       potential_infra_failure:
         description: Boolean flag when infra-related keyword spotted in logs.
         value: ${{ jobs.main.outputs.potential_infra_failure }}
+      coverage_report:
+        description: Coverage report (json), if generated
+        value: ${{ jobs.main.outputs.coverage_report }}
 jobs:
   
   main:
@@ -44,6 +48,7 @@ jobs:
       conclusion: ${{ steps.main.conclusion }}
       log: ${{ steps.main.outputs.log }}
       potential_infra_failure: ${{ steps.main.outputs.potential_infra_failure }}
+      coverage_report: ${{ steps.main.outputs.coverage_report }}
     steps:
         - name: Docker system cleanup
           run: |
@@ -86,12 +91,22 @@ jobs:
 
             EXIT_CODE=$?
             
-            echo "log=$(tail -c 2000 err.log |  base64 -w 0)" >> "$GITHUB_OUTPUT"
+            log=$(tail -c 2000 err.log |  base64 -w 0)
+            echo "log=$log" >> "$GITHUB_OUTPUT"
             
             potential_infra_failure=$(cat err.log | grep -Eqiw "device" && echo true || echo false)
             echo "potential_infra_failure=$potential_infra_failure" >> "$GITHUB_OUTPUT"
 
+            coverage_report=$(cat coverage.json |  base64 -w 0)
+            echo "coverage_report=$coverage_report" >> "$GITHUB_OUTPUT"
+
             exit $EXIT_CODE
+        
+        - name: Upload artifacts
+          uses: actions/upload-artifact@v4
+          with:
+            name: artifact-${{ github.run_id }}-${{ github.job }}
+            path: coverage.json
             
         - uses: "NVIDIA/NeMo/.github/actions/cancel-workflow@main"
           if: failure() && inputs.IS_OPTIONAL == false && !contains(github.event.pull_request.labels.*.name, 'no-fail-fast')
